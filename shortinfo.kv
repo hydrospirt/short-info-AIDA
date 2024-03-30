@@ -1,0 +1,26 @@
+#:kivy 2.2.1
+<ShortInfo>:
+    id: short_info
+    display: data
+    rows: 3
+    padding: 10
+    spacing: 5
+    canvas:
+        Rectangle:
+            source: 'assets/background.jpg'
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        Label:
+            text: 'Укажите путь'
+            color: 0, 0, 0
+            font_size: 50 
+    BoxLayout:
+        TextInput:
+            id: data
+            font_size: 50
+            multiline: False 
+    BoxLayout:
+        Button:
+            text: 'Сгенерировать'
+
