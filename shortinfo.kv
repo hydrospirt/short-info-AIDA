@@ -2,9 +2,13 @@
 <ShortInfo>:
     id: short_info
     display: data
-    rows: 3
+    cols: 1
     padding: 10
     spacing: 5
+    row_default_height: 40
+    height: self.minimum_height
+    row_force_default: True
+
     canvas:
         Rectangle:
             source: 'assets/background.jpg'
@@ -13,12 +17,12 @@
     BoxLayout:
         Label:
             text: 'Укажите путь'
-            color: 0, 0, 0
-            font_size: 50 
-    BoxLayout:
+            color: (1, 1, 1, .8)
+            font_size: 40
+            valign: 'middle'
         TextInput:
             id: data
-            font_size: 50
+            font_size: 15
             multiline: False 
     BoxLayout:
         Button:
