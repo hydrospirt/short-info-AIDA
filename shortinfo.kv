@@ -5,26 +5,38 @@
     cols: 1
     padding: 10
     spacing: 5
-    row_default_height: 40
-    height: self.minimum_height
-    row_force_default: True
-
     canvas:
         Rectangle:
             source: 'assets/background.jpg'
             size: self.size
             pos: self.pos
-    BoxLayout:
-        Label:
-            text: 'Укажите путь'
-            color: (1, 1, 1, .8)
-            font_size: 40
-            valign: 'middle'
-        TextInput:
-            id: data
-            font_size: 15
-            multiline: False 
-    BoxLayout:
-        Button:
-            text: 'Сгенерировать'
+    GridLayout:
+        cols: 1
+        rows: 2
+        row_default_height: 50
+        height: self.minimum_height
+        row_force_default: True
+        padding: (0, 200, 0, 10)
+        BoxLayout:
+            Label:
+                text: 'Укажите путь'
+                color: (1, 1, 1, .9)
+                font_size: 30
+                valign: 'middle'
+                size_hint: (0.4, 1)
+            TextInput:
+                id: data
+                font_size: 15
+                multiline: False 
+    GridLayout:
+        cols: 1
+        row_default_height: 50
+        col_default_width: 10
+        height: self.minimum_height
+        row_force_default: True
+        padding: (200, 10, 200, 0)
+        BoxLayout:
+            Button:
+                size_hint: (0.4, 1)
+                text: 'Сгенерировать'
 
