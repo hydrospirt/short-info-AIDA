@@ -14,7 +14,7 @@ __version__ = '0.1'
 class ShortInfo(GridLayout):
     def __init__(self, **var_args):
         super(ShortInfo, self).__init__(**var_args)
-        Window.size = (640, 340)
+        Window.size = (840, 440)
         Config.set('graphics', 'resizable', False)
         Config.write()
 
@@ -23,7 +23,7 @@ class ShortInfoApp(App):
     def build(self):
         self.title = f'Short Info AIDA v{__version__}'
         self.icon = 'assets/icon/icon.png'
-        # self.play_music()
+        self.play_music()
         return ShortInfo()
 
     def play_music(self):
