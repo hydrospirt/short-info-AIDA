@@ -1,45 +1,58 @@
 #:kivy 2.2.1
 <ShortInfo>:
-    id: short_info
-    display: data
-    cols: 1
-    padding: 10
-    spacing: 5
-    canvas:
-        Rectangle:
-            source: 'assets/background.jpg'
-            size: self.size
-            pos: self.pos
+    GridLayout:
+        id: short_info
+        display: data
+        cols: 1
+        padding: 10
+        spacing: 5
+        canvas:
+            Rectangle:
+                source: 'assets/background.jpg'
+                size: self.size
+                pos: self.pos
+        GridLayout:
+            cols: 1
+            rows: 2
+            row_default_height: 50
+            height: self.minimum_height
+            row_force_default: True
+            padding: (0, 200, 0, 10)
+            BoxLayout:
+                Label:
+                    text: 'Укажите путь'
+                    color: (1, 1, 1, .9)
+                    font_size: 30
+                    valign: 'middle'
+                    size_hint: (0.4, 1)
+                TextInput:
+                    id: data
+                    font_size: 15
+                    multiline: False 
+        GridLayout:
+            cols: 1
+            row_default_height: 50
+            col_default_width: 10
+            height: self.minimum_height
+            row_force_default: True
+            padding: (200, 10, 200, 0)
+            BoxLayout:
+                Button:
+                    on_press: root.open_file(data.text)
+                    size_hint: (0.4, 1)
+                    text: 'Сгенерировать'
+
+<ResultScreen>:
     GridLayout:
         cols: 1
-        rows: 2
-        row_default_height: 50
-        height: self.minimum_height
-        row_force_default: True
-        padding: (0, 200, 0, 10)
-        BoxLayout:
-            Label:
-                text: 'Укажите путь'
-                color: (1, 1, 1, .9)
-                font_size: 30
-                valign: 'middle'
-                size_hint: (0.4, 1)
-            TextInput:
-                id: data
-                font_size: 15
-                multiline: False 
-    GridLayout:
-        cols: 1
-        row_default_height: 50
-        col_default_width: 10
-        height: self.minimum_height
-        row_force_default: True
-        padding: (200, 10, 200, 0)
-        BoxLayout:
-            Button:
-                on_press: root.open_file(data.text)
-                size_hint: (0.4, 1)
-                text: 'Сгенерировать'
+        padding: 10
+        spacing: 5
+        canvas:
+            Rectangle:
+                source: 'assets/background.jpg'
+                size: self.size
+                pos: self.pos
+
 
 <CustomPopup>:
     auto_dismiss: False
