@@ -1,14 +1,22 @@
 import os
 
+from bs4 import BeautifulSoup
+
 from kivy.config import Config
 
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 
 __version__ = '0.1'
+
+
+class CustomPopup(Popup):
+    pass
 
 
 class ShortInfo(GridLayout):
@@ -17,6 +25,20 @@ class ShortInfo(GridLayout):
         Window.size = (840, 440)
         Config.set('graphics', 'resizable', False)
         Config.write()
+
+    def open_file(self, data: str):
+        if not data:
+            return self.send_error_msg(data)
+        with open(os.path.relpath(data), 'r') as f:
+            html = BeautifulSoup(f.read(), 'html.parser')
+        return html
+
+    def send_error_msg(self, data):
+        popup = CustomPopup()
+        popup.open()
+
+    def parse_html(self, html):
+        ...
 
 
 class ShortInfoApp(App):
