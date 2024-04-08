@@ -46,9 +46,21 @@
 <ResultScreen>:
     input_data: results
     GridItem:
+        row_default_height: 400
+        height: self.minimum_height
+        row_force_default: True
         TextInput:
             id: results
             font_size: 18
+        FloatLayout:
+            Button:
+                size_hint: 0.4, 0.2
+                pos_hint: {'center_x': 0.8, 'y': 0.75}
+                text: 'Скопировать'
+            Button:
+                size_hint: 0.4, 0.2
+                pos_hint: {'center_x': 0.2, 'y': 0.75}
+                text: 'Вернуться'    
 
 
 <CustomPopup>:
