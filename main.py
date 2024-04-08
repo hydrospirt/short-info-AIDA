@@ -21,6 +21,10 @@ class ResultScreen(Screen):
     def update_text_input(self, data):
         self.input_data.text += '\n' + data
 
+    def get_back_and_clean(self, results):
+        self.input_data.text = ''
+        self.manager.current = 'ShortInfo'
+
 
 class CustomPopup(Popup):
     pass
@@ -52,7 +56,6 @@ class ShortInfo(Screen):
         report_title = html.title.text
         report_date = trs[3][11].text
         name_pc = trs[3][8].text
-        print(name_pc)
         name_user_report = trs[3][9].text
         monitor = trs[3][25].text
         oc = trs[3][3].text
@@ -62,6 +65,7 @@ class ShortInfo(Screen):
         memory = trs[3][17].text
         self.manager.current = 'ResultScreen'
         self.manager.get_screen('ResultScreen').update_text_input(report_title)
+        self.manager.get_screen('ResultScreen').update_text_input(report_date)
         self.manager.get_screen('ResultScreen').update_text_input(monitor)
 
 
