@@ -5,33 +5,21 @@ from bs4 import BeautifulSoup
 from kivy.config import Config
 
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
+from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 from kivy.uix.popup import Popup
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
+
 
 __version__ = '0.1 alpha'
 
 
 class ResultScreen(Screen):
-    def __init__(self, **kwargs):
-        super(ResultScreen, self).__init__(**kwargs)
-        self.gird = GridLayout(cols=1)
-        self.text_input = TextInput(size=(400, 400))
-        self.copy_btn = Button(text='Скопировать')
-        self.back_btn = Button(text='Вернуться')
-        self.add_widget(self.gird)
-        self.gird.add_widget(self.text_input)
-        self.gird.add_widget(self.copy_btn)
-        self.gird.add_widget(self.back_btn)
+    input_data = ObjectProperty()
 
     def update_text_input(self, data):
-        self.text_input.text += '\n' + data
+        self.input_data.text += '\n' + data
 
 
 class CustomPopup(Popup):
