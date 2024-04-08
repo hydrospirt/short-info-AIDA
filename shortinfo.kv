@@ -1,57 +1,54 @@
 #:kivy 2.2.1
+<GridItem@GridLayout>:
+    cols: 1
+    padding: 10
+    spacing: 5
+    canvas:
+        Rectangle:
+            source: 'assets/background.jpg'
+            size: self.size
+            pos: self.pos
+
 <ShortInfo>:
-    GridLayout:
-        id: short_info
-        display: data
-        cols: 1
-        padding: 10
-        spacing: 5
-        canvas:
-            Rectangle:
-                source: 'assets/background.jpg'
-                size: self.size
-                pos: self.pos
+    GridItem:
+        BoxLayout:
+            orientation: 'vertical'
+            Image: 
+                source: 'assets/title.png'
         GridLayout:
             cols: 1
-            rows: 2
             row_default_height: 50
             height: self.minimum_height
             row_force_default: True
-            padding: (0, 200, 0, 10)
+            padding: (0, 0, 0, 10)
             BoxLayout:
                 Label:
-                    text: 'Укажите путь'
+                    text: 'Укажите путь:'
                     color: (1, 1, 1, .9)
                     font_size: 30
                     valign: 'middle'
-                    size_hint: (0.4, 1)
+                    halign: 'right'
+                    size_hint: (0.3, 1)
+                    pos_hint: {'center_x': 0.1, 'center_y': 0.5}
                 TextInput:
                     id: data
-                    font_size: 15
+                    font_size: 18
                     multiline: False 
-        GridLayout:
-            cols: 1
-            row_default_height: 50
-            col_default_width: 10
-            height: self.minimum_height
-            row_force_default: True
-            padding: (200, 10, 200, 0)
-            BoxLayout:
+            FloatLayout:
                 Button:
+                    font_size: 18
+                    size_hint: 0.5, 1
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
                     on_press: root.open_file(data.text)
-                    size_hint: (0.4, 1)
                     text: 'Сгенерировать'
 
+
 <ResultScreen>:
-    GridLayout:
-        cols: 1
-        padding: 10
-        spacing: 5
-        canvas:
-            Rectangle:
-                source: 'assets/background.jpg'
-                size: self.size
-                pos: self.pos
+    input_data: results
+    GridItem:
+        TextInput:
+            id: results
+            font_size: 18
 
 
 <CustomPopup>:
@@ -63,12 +60,10 @@
             size_hint: 1, 0.9
             Label:
                 text: 'Указанный путь не найден, проверьте данные'
-        GridLayout:
-            rows: 1
-            padding: (400, 10, 200, 0)
+        FloatLayout:
             Button:
-                size: (200, 100)
-                size_hint: (None, None)
+                size_hint: 0.3, 0.3
+                pos_hint: {'center_x': 0.5, 'y': 0.3}
                 text: 'ОК'
                 on_release: root.dismiss()
 
