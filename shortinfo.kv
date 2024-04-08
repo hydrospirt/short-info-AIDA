@@ -68,11 +68,13 @@
 <CustomPopup>:
     auto_dismiss: False
     title: 'Ошибка'
+    error_info: error_info
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
             size_hint: 1, 0.9
             Label:
+                id: error_info
                 text: 'Указанный путь не найден, проверьте данные'
         FloatLayout:
             Button:
