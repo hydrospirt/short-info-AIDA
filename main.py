@@ -16,6 +16,112 @@ from kivy.core.clipboard import Clipboard
 __version__ = '0.1 alpha'
 
 
+class ShortInfo(Screen):
+    def __init__(self, **var_args):
+        super(ShortInfo, self).__init__(**var_args)
+        Window.size = (840, 440)
+        Config.set('graphics', 'resizable', False)
+        Config.write()
+        self.music = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
+        self.music.loop = True
+        self.music.play()
+
+    def open_file(self, data: str):
+        '''
+        Обработать запрещеные символы:
+        < (less than)
+        > (greater than)
+        : (colon - sometimes works, but is actually NTFS Alternate Data Streams)
+        " (double quote)
+        / (forward slash)
+        \ (backslash)
+        | (vertical bar or pipe)
+        ? (question mark)
+        * (asterisk)
+        '''
+        try:
+            file_path = os.path.relpath(data)
+            with open(file_path, 'r') as f:
+                html = BeautifulSoup(f.read(), 'lxml')
+            return self.parse_html(html)
+        except (FileNotFoundError, ValueError):
+            return self.send_error_msg(data)
+
+    def send_error_msg(self, data):
+        popup = CustomPopup()
+        popup.update_content(data)
+        popup.open()
+
+    def parse_html(self, html):
+        tables = html.find_all('table')
+        td_tags = tables[3].find_all('td')
+
+        info_pc_data = []
+        pc_data = []
+
+        for tag in td_tags:
+            if 'Имя компьютера' in tag.get_text():
+                label_aida = tag.get_text()
+                pc_name = tag.find_next_sibling().get_text()
+                sum_pc_name = label_aida + pc_name
+                info_pc_data.append(sum_pc_name)
+            if 'Имя пользователя' in tag.get_text():
+                label_aida = tag.get_text()
+                user_name = tag.find_next_sibling().get_text()
+                sum_user_name = label_aida + user_name
+                info_pc_data.append(sum_user_name)
+            if 'Тип ЦП' in tag.get_text():
+                processor = tag.find_next_sibling().get_text()
+                processor = processor.rstrip()
+                pc_data.append(processor)
+            if 'Системная плата' in tag.get_text():
+                try:
+                    motherboard = tag.find_next_sibling().get_text()
+                    motherboard = motherboard.rstrip()
+                    pc_data.append(motherboard)
+                except AttributeError:
+                    ...
+            if 'Видеоадаптер' in tag.get_text():
+                videoadapter = tag.find_next_sibling().get_text()
+                videoadapter = videoadapter.rstrip()
+                pc_data.append(videoadapter)
+            if 'Монитор' in tag.get_text():
+                label_aida = tag.get_text()
+                monitor = tag.find_next_sibling().get_text()
+                sum_monitor = label_aida + monitor
+                info_pc_data.append(sum_monitor)
+            if 'Дисковый накопитель' in tag.get_text():
+                disk = tag.find_next_sibling().get_text()
+                if 'USB' not in disk:
+                    disk = disk.rstrip()
+                    pc_data.append(disk)
+            if 'Общий объём' in tag.get_text():
+                disk_free_space = tag.find_next_sibling().get_text()
+                disk_free_space = disk_free_space.rstrip()
+                pc_data.append(disk_free_space)
+            if 'Принтер' in tag.get_text():
+                label_aida = tag.get_text()
+                printer = tag.find_next_sibling().get_text()
+                if printer.rstrip() not in ('Adobe PDF', 'Fax', 'Microsoft Print to PDF', 'Microsoft XPS Document Writer', 'OneNote'):
+                    sum_printer = label_aida + printer
+                    info_pc_data.append(sum_printer)
+            if 'Дата / Время' in tag.get_text():
+                label_aida = tag.get_text()
+                date_and_time = tag.find_next_sibling().get_text()
+                sum_dt = label_aida + date_and_time
+                info_pc_data.append(sum_dt)
+            if 'Операционная система' in tag.get_text():
+                oc = tag.find_next_sibling().get_text()
+                oc = oc.rstrip() 
+        pc_data.append(oc)
+
+        report_title = html.title.text
+        self.manager.current = 'ResultScreen'
+        self.manager.get_screen('ResultScreen').update_text_input(report_title)
+        self.manager.get_screen('ResultScreen').update_text_input(''.join(info_pc_data))
+        self.manager.get_screen('ResultScreen').update_text_input('\\'.join(pc_data))
+
+
 class ResultScreen(Screen):
     input_data = ObjectProperty()
 
@@ -48,63 +154,14 @@ class CustomPopup(Popup):
             f'{data}')
 
 
-class ShortInfo(Screen):
-    def __init__(self, **var_args):
-        super(ShortInfo, self).__init__(**var_args)
-        Window.size = (840, 440)
-        Config.set('graphics', 'resizable', False)
-        Config.write()
-
-    def open_file(self, data: str):
-        try:
-            file_path = os.path.relpath(data)
-            with open(file_path, 'r') as f:
-                html = BeautifulSoup(f.read(), 'lxml')
-            return self.parse_html(html)
-        except (FileNotFoundError, ValueError):
-            return self.send_error_msg(data)
-
-    def send_error_msg(self, data):
-        popup = CustomPopup()
-        popup.update_content(data)
-        popup.open()
-
-    def parse_html(self, html):
-        table = html.find_all('table')
-        trs = []
-        for td in table:
-            trs.append(td.find_all('tr'))
-        report_title = html.title.text
-        report_date = trs[3][11].text
-        name_pc = trs[3][8].text
-        name_user_report = trs[3][9].text
-        monitor = trs[3][25].text
-        oc = trs[3][3].text
-        cpu = trs[3][14].text
-        motherboard = trs[3][15].text
-        videoadapter = trs[3][22].text
-        memory = trs[3][17].text
-        self.manager.current = 'ResultScreen'
-        self.manager.get_screen('ResultScreen').update_text_input(report_title)
-        self.manager.get_screen('ResultScreen').update_text_input(report_date)
-        self.manager.get_screen('ResultScreen').update_text_input(monitor)
-
-
 class ShortInfoApp(App):
     def build(self):
         self.title = f'Short Info AIDA v{__version__}'
         self.icon = 'assets/icon/icon.png'
-        # self.play_music()
         sm = ScreenManager()
         sm.add_widget(ShortInfo(name='ShortInfo'))
         sm.add_widget(ResultScreen(name='ResultScreen'))
         return sm
-
-    def play_music(self):
-        sound_loader = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
-        sound_loader.loop = True
-        if sound_loader:
-            sound_loader.play()
 
 
 if __name__ == '__main__':
