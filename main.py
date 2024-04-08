@@ -32,7 +32,20 @@ class ResultScreen(Screen):
 
 
 class CustomPopup(Popup):
-    pass
+    error_info = ObjectProperty()
+
+    def update_content(self, data):
+        if len(data) < 1:
+            data = '\n --Пустая строка--'
+        elif len(data) > 1 and data[-4:] not in ('html', '.htm'):
+            data = '\nРасширение файла не поддерживается программой.'
+        elif 1 < len(data) <= 30:
+            data = f'\n {data[-30:]}'
+        else:
+            data = f'\n ... {data[-30:]}'
+        self.error_info.text = (
+            'Указанный путь не найден, проверьте данные: ' +
+            f'{data}')
 
 
 class ShortInfo(Screen):
@@ -43,14 +56,17 @@ class ShortInfo(Screen):
         Config.write()
 
     def open_file(self, data: str):
-        if not data:
+        try:
+            file_path = os.path.relpath(data)
+            with open(file_path, 'r') as f:
+                html = BeautifulSoup(f.read(), 'lxml')
+            return self.parse_html(html)
+        except (FileNotFoundError, ValueError):
             return self.send_error_msg(data)
-        with open(os.path.relpath(data), 'r') as f:
-            html = BeautifulSoup(f.read(), 'lxml')
-        return self.parse_html(html)
 
     def send_error_msg(self, data):
         popup = CustomPopup()
+        popup.update_content(data)
         popup.open()
 
     def parse_html(self, html):
