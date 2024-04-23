@@ -1,4 +1,5 @@
 import os
+import io
 
 from bs4 import BeautifulSoup
 
@@ -22,9 +23,9 @@ class ShortInfo(Screen):
         Window.size = (840, 440)
         Config.set('graphics', 'resizable', False)
         Config.write()
-        self.music = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
-        self.music.loop = True
-        self.music.play()
+        # self.music = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
+        # self.music.loop = True
+        # self.music.play()
 
     def open_file(self, data: str):
         '''
@@ -39,13 +40,11 @@ class ShortInfo(Screen):
         ? (question mark)
         * (asterisk)
         '''
-        try:
-            file_path = os.path.relpath(data)
-            with open(file_path, 'r') as f:
-                html = BeautifulSoup(f.read(), 'lxml')
-            return self.parse_html(html)
-        except (FileNotFoundError, ValueError):
-            return self.send_error_msg(data)
+        file_path = os.path.abspath(data)
+        with io.open(file_path, 'rb') as f:
+            html = BeautifulSoup(f.read(), 'lxml')
+        return self.parse_html(html)
+
 
     def send_error_msg(self, data):
         popup = CustomPopup()
@@ -112,7 +111,7 @@ class ShortInfo(Screen):
                 info_pc_data.append(sum_dt)
             if 'Операционная система' in tag.get_text():
                 oc = tag.find_next_sibling().get_text()
-                oc = oc.rstrip() 
+                oc = oc.rstrip()
         pc_data.append(oc)
 
         report_title = html.title.text
