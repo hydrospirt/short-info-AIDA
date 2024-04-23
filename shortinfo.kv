@@ -10,7 +10,20 @@
             pos: self.pos
 
 <ShortInfo>:
+    toggle_icon: switch_icon
     GridItem:
+        FloatLayout:
+            MDRoundFlatIconButton:
+                line_color: 'white'
+                pos_hint: {'top': 1}
+                on_release: root.toggle_music(switch_icon)
+                MDIcon:
+                    id: switch_icon
+                    icon: 'stop'
+                    color: 'white'
+
+
+
         BoxLayout:
             orientation: 'vertical'
             Image: 
