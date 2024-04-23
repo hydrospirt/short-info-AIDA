@@ -16,6 +16,8 @@ from kivy.core.clipboard import Clipboard
 
 __version__ = '0.1 alpha'
 
+FILE_MUSIC = 'assets/sound/At_Dooms_Gate.mp3'
+
 
 class ShortInfo(Screen):
     def __init__(self, **var_args):
@@ -40,11 +42,13 @@ class ShortInfo(Screen):
         ? (question mark)
         * (asterisk)
         '''
-        file_path = os.path.abspath(data)
-        with io.open(file_path, 'rb') as f:
-            html = BeautifulSoup(f.read(), 'lxml')
-        return self.parse_html(html)
-
+        try:
+            file_path = os.path.abspath(data)
+            with io.open(file_path, 'rb') as f:
+                html = BeautifulSoup(f.read(), 'lxml')
+            return self.parse_html(html)
+        except (FileNotFoundError,  PermissionError, OSError):
+            return self.send_error_msg(data)
 
     def send_error_msg(self, data):
         popup = CustomPopup()
@@ -83,7 +87,8 @@ class ShortInfo(Screen):
             if 'Видеоадаптер' in tag.get_text():
                 videoadapter = tag.find_next_sibling().get_text()
                 videoadapter = videoadapter.rstrip()
-                pc_data.append(videoadapter)
+                if videoadapter not in pc_data:
+                    pc_data.append(videoadapter)
             if 'Монитор' in tag.get_text():
                 label_aida = tag.get_text()
                 monitor = tag.find_next_sibling().get_text()
