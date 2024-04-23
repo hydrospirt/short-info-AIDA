@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from kivy.config import Config
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
@@ -20,14 +20,28 @@ FILE_MUSIC = 'assets/sound/At_Dooms_Gate.mp3'
 
 
 class ShortInfo(Screen):
+    toggle_icon = ObjectProperty()
+
     def __init__(self, **var_args):
         super(ShortInfo, self).__init__(**var_args)
         Window.size = (840, 440)
         Config.set('graphics', 'resizable', False)
         Config.write()
-        # self.music = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
-        # self.music.loop = True
-        # self.music.play()
+        self.music = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
+        self.music.loop = True
+        self.music.play()
+
+    def toggle_music(self, obj):
+        print(obj.icon)
+        print(self.toggle_icon.icon)
+        if obj.icon == 'play':
+            print("Music Playing")
+            self.music.stop()
+            self.toggle_icon.icon = 'stop'
+        else:
+            print("Music Playing")
+            self.toggle_icon.icon = 'play'
+            self.music.play()
 
     def open_file(self, data: str):
         '''
@@ -158,7 +172,7 @@ class CustomPopup(Popup):
             f'{data}')
 
 
-class ShortInfoApp(App):
+class ShortInfoApp(MDApp):
     def build(self):
         self.title = f'Short Info AIDA v{__version__}'
         self.icon = 'assets/icon/icon.png'
