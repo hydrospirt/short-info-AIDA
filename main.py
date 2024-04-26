@@ -16,7 +16,14 @@ from kivy.core.clipboard import Clipboard
 
 __version__ = '0.1 alpha'
 
+TITLE = f'Short Info AIDA v{__version__}'
+
 FILE_MUSIC = 'assets/sound/At_Dooms_Gate.mp3'
+ICON_ASSET = 'assets/icon/icon.png'
+
+
+ERR_EMPTY_LINE = '\n --Пустая строка--'
+ERR_WRONG_EXT = '\nРасширение файла не поддерживается программой.'
 
 
 class ShortInfo(Screen):
@@ -147,9 +154,9 @@ class CustomPopup(Popup):
 
     def update_content(self, data):
         if len(data) < 1:
-            data = '\n --Пустая строка--'
+            data = ERR_EMPTY_LINE
         elif len(data) > 1 and data[-4:] not in ('html', '.htm'):
-            data = '\nРасширение файла не поддерживается программой.'
+            data = ERR_WRONG_EXT
         elif 1 < len(data) <= 30:
             data = f'\n {data[-30:]}'
         else:
@@ -161,8 +168,8 @@ class CustomPopup(Popup):
 
 class ShortInfoApp(MDApp):
     def build(self):
-        self.title = f'Short Info AIDA v{__version__}'
-        self.icon = 'assets/icon/icon.png'
+        self.title = TITLE
+        self.icon = ICON_ASSET
         sm = ScreenManager()
         sm.add_widget(ShortInfo(name='ShortInfo'))
         sm.add_widget(ResultScreen(name='ResultScreen'))
