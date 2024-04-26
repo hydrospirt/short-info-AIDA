@@ -66,10 +66,8 @@ class ShortInfo(Screen):
     def parse_html(self, html):
         tables = html.find_all('table')
         td_tags = tables[3].find_all('td')
-
         info_pc_data = []
         pc_data = []
-
         for tag in td_tags:
             if 'Имя компьютера' in tag.get_text():
                 label_aida = tag.get_text()
@@ -84,7 +82,14 @@ class ShortInfo(Screen):
             if 'Тип ЦП' in tag.get_text():
                 processor = tag.find_next_sibling().get_text()
                 processor = processor.rstrip()
-                pc_data.append(processor)
+                if len(processor) < 30:
+                    new_td_tags = tables[9].find_all('td')
+                    for tag in new_td_tags:
+                        if 'Имя ЦП CPUID' in tag.get_text():
+                            processor = tag.find_next_sibling().get_text()
+                            processor = processor.rstrip()
+                if processor not in pc_data:
+                    pc_data.append(processor)
             if 'Системная плата' in tag.get_text():
                 try:
                     motherboard = tag.find_next_sibling().get_text()
@@ -92,6 +97,21 @@ class ShortInfo(Screen):
                     pc_data.append(motherboard)
                 except AttributeError:
                     ...
+            if 'Системная память' in tag.get_text():
+                new_td_tags = tables[25].find_all('td')
+                pc_memory = ''
+                for tag in new_td_tags:
+                    if 'Размер модуля' in tag.get_text():
+                        size_memory = tag.find_next_sibling().get_text()
+                        size_memory = size_memory.rstrip()
+                        size_memory = size_memory.split()
+                        size_memory = f'{size_memory[0]} {size_memory[1]}'
+                        pc_memory += f' {size_memory}'
+                    if 'Скорость памяти' in tag.get_text():
+                        spd_memory = tag.find_next_sibling().get_text()
+                        spd_memory = spd_memory.rstrip()
+                        pc_memory += f' {spd_memory}'
+                pc_data.append(pc_memory)
             if 'Видеоадаптер' in tag.get_text():
                 videoadapter = tag.find_next_sibling().get_text()
                 videoadapter = videoadapter.rstrip()
@@ -114,7 +134,11 @@ class ShortInfo(Screen):
             if 'Принтер' in tag.get_text():
                 label_aida = tag.get_text()
                 printer = tag.find_next_sibling().get_text()
-                if printer.rstrip() not in ('Adobe PDF', 'Fax', 'Microsoft Print to PDF', 'Microsoft XPS Document Writer', 'OneNote'):
+                if printer.rstrip() not in ('Adobe PDF',
+                                            'Fax',
+                                            'Microsoft Print to PDF',
+                                            'Microsoft XPS Document Writer',
+                                            'OneNote'):
                     sum_printer = label_aida + printer
                     info_pc_data.append(sum_printer)
             if 'Дата / Время' in tag.get_text():
@@ -129,9 +153,12 @@ class ShortInfo(Screen):
 
         report_title = html.title.text
         self.manager.current = 'ResultScreen'
-        self.manager.get_screen('ResultScreen').update_text_input(report_title)
-        self.manager.get_screen('ResultScreen').update_text_input(''.join(info_pc_data))
-        self.manager.get_screen('ResultScreen').update_text_input('\\'.join(pc_data))
+        self.manager.get_screen(
+            'ResultScreen').update_text_input(report_title)
+        self.manager.get_screen(
+            'ResultScreen').update_text_input(''.join(info_pc_data))
+        self.manager.get_screen(
+            'ResultScreen').update_text_input('\\'.join(pc_data))
 
 
 class ResultScreen(Screen):
