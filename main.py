@@ -27,21 +27,20 @@ class ShortInfo(Screen):
         Window.size = (840, 440)
         Config.set('graphics', 'resizable', False)
         Config.write()
-        self.music = SoundLoader.load('assets/sound/At_Dooms_Gate.mp3')
+        self.music = SoundLoader.load(FILE_MUSIC)
         self.music.loop = True
-        self.music.play()
 
     def toggle_music(self, obj):
         print(obj.icon)
         print(self.toggle_icon.icon)
-        if obj.icon == 'play':
-            print("Music Playing")
+        if obj.icon == 'stop':
+            print('Music Playing')
+            self.music.play()
+            self.toggle_icon.icon = 'play'
+        else:
+            print('Music Playing')
             self.music.stop()
             self.toggle_icon.icon = 'stop'
-        else:
-            print("Music Playing")
-            self.toggle_icon.icon = 'play'
-            self.music.play()
 
     def open_file(self, data: str):
         '''
