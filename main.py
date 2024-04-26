@@ -43,18 +43,6 @@ class ShortInfo(Screen):
             self.toggle_icon.icon = 'stop'
 
     def open_file(self, data: str):
-        '''
-        Обработать запрещеные символы:
-        < (less than)
-        > (greater than)
-        : (colon - sometimes works, but is actually NTFS Alternate Data Streams)
-        " (double quote)
-        / (forward slash)
-        \ (backslash)
-        | (vertical bar or pipe)
-        ? (question mark)
-        * (asterisk)
-        '''
         try:
             file_path = os.path.abspath(data)
             with io.open(file_path, 'rb') as f:
