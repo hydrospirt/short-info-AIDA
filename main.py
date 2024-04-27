@@ -1,7 +1,10 @@
 import os
+import sys
 import io
 
 from bs4 import BeautifulSoup
+
+from kivy.resources import resource_add_path, resource_find
 
 from kivy.config import Config
 
@@ -38,14 +41,10 @@ class ShortInfo(Screen):
         self.music.loop = True
 
     def toggle_music(self, obj):
-        print(obj.icon)
-        print(self.toggle_icon.icon)
         if obj.icon == 'stop':
-            print('Music Playing')
             self.music.play()
             self.toggle_icon.icon = 'play'
         else:
-            print('Music Playing')
             self.music.stop()
             self.toggle_icon.icon = 'stop'
 
@@ -204,4 +203,6 @@ class ShortInfoApp(MDApp):
 
 
 if __name__ == '__main__':
+    if hasattr(sys, '_MEIPASS'):
+        resource_add_path(os.path.join(sys._MEIPASS))
     ShortInfoApp().run()
