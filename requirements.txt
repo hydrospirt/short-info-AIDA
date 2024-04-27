@@ -1,3 +1,4 @@
+altgraph==0.17.4
 asyncgui==0.6.1
 asynckivy==0.6.2
 beautifulsoup4==4.12.3
@@ -13,14 +14,19 @@ kivy-deps.glew==0.3.1
 kivy-deps.sdl2==0.7.0
 Kivy-examples==2.3.0
 Kivy-Garden==0.1.5
-kivymd==1.2.0
+kivymd @ https://github.com/kivymd/KivyMD/archive/master.zip#sha256=b16efb24c3e6d6c790e4aa7f1c77490c06c1c5ef4d076ab9e368b0835f7582cc
 lxml==5.2.1
 materialyoucolor==2.0.9
+packaging==24.0
+pefile==2023.2.7
 pillow==10.2.0
 platformdirs==4.2.0
 Pygments==2.17.2
+pyinstaller==6.6.0
+pyinstaller-hooks-contrib==2024.5
 pypiwin32==223
 pywin32==306
+pywin32-ctypes==0.2.2
 requests==2.31.0
 setuptools==69.2.0
 soupsieve==2.5
