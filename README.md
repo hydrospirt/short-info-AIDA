@@ -15,6 +15,10 @@ short_info_AIDA - это GUI парсер HTM файлов программы AI
 - KivyMD
 - BeautifulSoup4
 
+## Видео Инструкция
+
+https://youtu.be/P9EwM06DkN0
+
 ## Инструкция
 
 1. Установить программу AIDA64 или AIDA64 Portable
