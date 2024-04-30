@@ -1,21 +1,17 @@
+import io
 import os
 import sys
-import io
 
 from bs4 import BeautifulSoup
-
-from kivy.resources import resource_add_path, resource_find
-
 from kivy.config import Config
-
-from kivymd.app import MDApp
-from kivy.properties import ObjectProperty
-from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
-from kivy.uix.popup import Popup
-from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.clipboard import Clipboard
-
+from kivy.core.window import Window
+from kivy.properties import ObjectProperty
+from kivy.resources import resource_add_path, resource_find  # noqa
+from kivy.uix.popup import Popup
+from kivy.uix.screenmanager import Screen, ScreenManager
+from kivymd.app import MDApp
 
 __version__ = '0.1 alpha'
 
@@ -231,7 +227,7 @@ class ShortInfoApp(MDApp):
 
 
 if __name__ == '__main__':
-    from kivymd.icon_definitions import md_icons # noqa
+    from kivymd.icon_definitions import md_icons  # noqa
     if hasattr(sys, '_MEIPASS'):
         resource_add_path(os.path.join(sys._MEIPASS))
     ShortInfoApp().run()
