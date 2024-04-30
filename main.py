@@ -24,9 +24,11 @@ TITLE = f'Short Info AIDA v{__version__}'
 FILE_MUSIC = 'assets/sound/At_Dooms_Gate.mp3'
 ICON_ASSET = 'assets/icon/icon.png'
 
+EXT_FILE = ('html', '.htm')
 
 ERR_EMPTY_LINE = '\n --Пустая строка--'
 ERR_WRONG_EXT = '\nРасширение файла не поддерживается программой.'
+ERR_MSG_TXT = 'Указанный путь не найден, проверьте данные: '
 
 
 class ShortInfo(Screen):
@@ -181,15 +183,14 @@ class CustomPopup(Popup):
     def update_content(self, data):
         if len(data) < 1:
             data = ERR_EMPTY_LINE
-        elif len(data) > 1 and data[-4:] not in ('html', '.htm'):
+        elif len(data) > 1 and data[-4:] not in EXT_FILE:
             data = ERR_WRONG_EXT
         elif 1 < len(data) <= 30:
             data = f'\n {data[-30:]}'
         else:
             data = f'\n ... {data[-30:]}'
         self.error_info.text = (
-            'Указанный путь не найден, проверьте данные: ' +
-            f'{data}')
+            ERR_MSG_TXT + f'{data}')
 
 
 class ShortInfoApp(MDApp):
