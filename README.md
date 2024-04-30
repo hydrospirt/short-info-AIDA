@@ -19,6 +19,7 @@ short_info_AIDA - это GUI парсер HTM файлов программы AI
 
 1. Установить программу AIDA64 или AIDA64 Portable
 2. Запустите программу AIDA64 или AIDA64 Portable и нажмите Отчет
+![Alt text](https://github.com/hydrospirt/short-info-AIDA/tree/master/for_manual/1.png "Как выглядит AIDA отчет / образец")
 3. Мастер отчетов -> Далее
 4. Профиль отчётов "По выбору Пользователя"
 5. В "Пользовательский профиль" выбрать всё кроме "Тест"
