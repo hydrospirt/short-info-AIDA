@@ -31,6 +31,25 @@ ERR_WRONG_EXT = '\nРасширение файла не поддерживает
 ERR_MSG_TXT = 'Указанный путь не найден, проверьте данные: '
 
 
+class CInfo:
+    CNAME = 'Имя компьютера'
+    UNAME = 'Имя пользователя'
+    CPTYPE = 'Тип ЦП'
+    CPUIDNAME = 'Имя ЦП CPUID'
+    MOTHERB = 'Системная плата'
+    RAM = 'Системная память'
+    RSIZE = 'Размер модуля'
+    RSPEED = 'Скорость памяти'
+    VIDEOA = 'Видеоадаптер'
+    MONITOR = 'Монитор'
+    DISKDRIVE = 'Дисковый накопитель'
+    TVOLUME = 'Общий объём'
+    PRINTER = 'Принтер'
+    TDATE = 'Дата / Время'
+    OS = 'Операционная система'
+    USB = 'USB'
+
+
 class ShortInfo(Screen):
     toggle_icon = ObjectProperty()
 
@@ -70,69 +89,69 @@ class ShortInfo(Screen):
         info_pc_data = []
         pc_data = []
         for tag in td_tags:
-            if 'Имя компьютера' in tag.get_text():
+            if CInfo.CNAME in tag.get_text():
                 label_aida = tag.get_text()
                 pc_name = tag.find_next_sibling().get_text()
                 sum_pc_name = label_aida + pc_name
                 info_pc_data.append(sum_pc_name)
-            if 'Имя пользователя' in tag.get_text():
+            if CInfo.UNAME in tag.get_text():
                 label_aida = tag.get_text()
                 user_name = tag.find_next_sibling().get_text()
                 sum_user_name = label_aida + user_name
                 info_pc_data.append(sum_user_name)
-            if 'Тип ЦП' in tag.get_text():
+            if CInfo.CPTYPE in tag.get_text():
                 processor = tag.find_next_sibling().get_text()
                 processor = processor.rstrip()
                 if len(processor) < 30:
                     new_td_tags = tables[9].find_all('td')
                     for tag in new_td_tags:
-                        if 'Имя ЦП CPUID' in tag.get_text():
+                        if CInfo.CPUIDNAME in tag.get_text():
                             processor = tag.find_next_sibling().get_text()
                             processor = processor.rstrip()
                 if processor not in pc_data:
                     pc_data.append(processor)
-            if 'Системная плата' in tag.get_text():
+            if CInfo.MOTHERB in tag.get_text():
                 try:
                     motherboard = tag.find_next_sibling().get_text()
                     motherboard = motherboard.rstrip()
                     pc_data.append(motherboard)
                 except AttributeError:
                     ...
-            if 'Системная память' in tag.get_text():
+            if CInfo.RAM in tag.get_text():
                 new_td_tags = tables[25].find_all('td')
                 pc_memory = ''
                 for tag in new_td_tags:
-                    if 'Размер модуля' in tag.get_text():
+                    if CInfo.RSIZE in tag.get_text():
                         size_memory = tag.find_next_sibling().get_text()
                         size_memory = size_memory.rstrip()
                         size_memory = size_memory.split()
                         size_memory = f'{size_memory[0]} {size_memory[1]}'
                         pc_memory += f' {size_memory}'
-                    if 'Скорость памяти' in tag.get_text():
+                    if CInfo.RSPEED in tag.get_text():
                         spd_memory = tag.find_next_sibling().get_text()
                         spd_memory = spd_memory.rstrip()
                         pc_memory += f' {spd_memory}'
                 pc_data.append(pc_memory)
-            if 'Видеоадаптер' in tag.get_text():
+            if CInfo.VIDEOA in tag.get_text():
                 videoadapter = tag.find_next_sibling().get_text()
                 videoadapter = videoadapter.rstrip()
                 if videoadapter not in pc_data:
                     pc_data.append(videoadapter)
-            if 'Монитор' in tag.get_text():
+            if CInfo.MONITOR in tag.get_text():
                 label_aida = tag.get_text()
                 monitor = tag.find_next_sibling().get_text()
                 sum_monitor = label_aida + monitor
                 info_pc_data.append(sum_monitor)
-            if 'Дисковый накопитель' in tag.get_text():
+            if CInfo.DISKDRIVE in tag.get_text():
                 disk = tag.find_next_sibling().get_text()
-                if 'USB' not in disk:
+                if CInfo.USB not in disk:
                     disk = disk.rstrip()
                     pc_data.append(disk)
-            if 'Общий объём' in tag.get_text():
+            if CInfo.TVOLUME in tag.get_text():
                 disk_free_space = tag.find_next_sibling().get_text()
                 disk_free_space = disk_free_space.rstrip()
                 pc_data.append(disk_free_space)
-            if 'Принтер' in tag.get_text():
+            if CInfo.PRINTER in tag.get_text():
                 label_aida = tag.get_text()
                 printer = tag.find_next_sibling().get_text()
                 if printer.rstrip() not in ('Adobe PDF',
@@ -142,12 +161,12 @@ class ShortInfo(Screen):
                                             'OneNote'):
                     sum_printer = label_aida + printer
                     info_pc_data.append(sum_printer)
-            if 'Дата / Время' in tag.get_text():
+            if CInfo.TDATE in tag.get_text():
                 label_aida = tag.get_text()
                 date_and_time = tag.find_next_sibling().get_text()
                 sum_dt = label_aida + date_and_time
                 info_pc_data.append(sum_dt)
-            if 'Операционная система' in tag.get_text():
+            if CInfo.OS in tag.get_text():
                 oc = tag.find_next_sibling().get_text()
                 oc = oc.rstrip()
         pc_data.append(oc)
