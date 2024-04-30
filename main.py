@@ -48,6 +48,11 @@ class CInfo:
     TDATE = 'Дата / Время'
     OS = 'Операционная система'
     USB = 'USB'
+    EXCLUDE_PRINTER = ('Adobe PDF',
+                       'Fax',
+                       'Microsoft Print to PDF',
+                       'Microsoft XPS Document Writer',
+                       'OneNote')
 
 
 class ShortInfo(Screen):
@@ -154,11 +159,7 @@ class ShortInfo(Screen):
             if CInfo.PRINTER in tag.get_text():
                 label_aida = tag.get_text()
                 printer = tag.find_next_sibling().get_text()
-                if printer.rstrip() not in ('Adobe PDF',
-                                            'Fax',
-                                            'Microsoft Print to PDF',
-                                            'Microsoft XPS Document Writer',
-                                            'OneNote'):
+                if printer.rstrip() not in CInfo.EXCLUDE_PRINTER:
                     sum_printer = label_aida + printer
                     info_pc_data.append(sum_printer)
             if CInfo.TDATE in tag.get_text():
