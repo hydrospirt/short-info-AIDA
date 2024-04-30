@@ -204,6 +204,7 @@ class ShortInfoApp(MDApp):
 
 
 if __name__ == '__main__':
+    from kivymd.icon_definitions import md_icons # noqa
     if hasattr(sys, '_MEIPASS'):
         resource_add_path(os.path.join(sys._MEIPASS))
     ShortInfoApp().run()
