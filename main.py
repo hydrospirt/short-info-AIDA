@@ -21,6 +21,8 @@ __version__ = '0.1 alpha'
 
 TITLE = f'Short Info AIDA v{__version__}'
 
+PARSER = 'lxml'
+
 FILE_MUSIC = 'assets/sound/At_Dooms_Gate.mp3'
 ICON_ASSET = 'assets/icon/icon.png'
 
@@ -29,6 +31,11 @@ EXT_FILE = ('html', '.htm')
 ERR_EMPTY_LINE = '\n --Пустая строка--'
 ERR_WRONG_EXT = '\nРасширение файла не поддерживается программой.'
 ERR_MSG_TXT = 'Указанный путь не найден, проверьте данные: '
+
+
+class Tag:
+    TABLE = 'table'
+    TD = 'td'
 
 
 class CInfo:
@@ -78,7 +85,7 @@ class ShortInfo(Screen):
         try:
             file_path = os.path.abspath(data)
             with io.open(file_path, 'rb') as f:
-                html = BeautifulSoup(f.read(), 'lxml')
+                html = BeautifulSoup(f.read(), PARSER)
             return self.parse_html(html)
         except (FileNotFoundError,  PermissionError, OSError):
             return self.send_error_msg(data)
@@ -89,8 +96,8 @@ class ShortInfo(Screen):
         popup.open()
 
     def parse_html(self, html):
-        tables = html.find_all('table')
-        td_tags = tables[3].find_all('td')
+        tables = html.find_all(Tag.TABLE)
+        td_tags = tables[3].find_all(Tag.TD)
         info_pc_data = []
         pc_data = []
         for tag in td_tags:
@@ -108,7 +115,7 @@ class ShortInfo(Screen):
                 processor = tag.find_next_sibling().get_text()
                 processor = processor.rstrip()
                 if len(processor) < 30:
-                    new_td_tags = tables[9].find_all('td')
+                    new_td_tags = tables[9].find_all(Tag.TD)
                     for tag in new_td_tags:
                         if CInfo.CPUIDNAME in tag.get_text():
                             processor = tag.find_next_sibling().get_text()
@@ -123,7 +130,7 @@ class ShortInfo(Screen):
                 except AttributeError:
                     ...
             if CInfo.RAM in tag.get_text():
-                new_td_tags = tables[25].find_all('td')
+                new_td_tags = tables[25].find_all(Tag.TD)
                 pc_memory = ''
                 for tag in new_td_tags:
                     if CInfo.RSIZE in tag.get_text():
