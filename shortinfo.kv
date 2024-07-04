@@ -37,18 +37,16 @@
             row_force_default: True
             padding: (0, 0, 0, 10)
             BoxLayout:
-                Label:
-                    text: 'Укажите путь:'
-                    color: (1, 1, 1, .9)
-                    font_size: 30
-                    valign: 'middle'
-                    halign: 'right'
-                    size_hint: (0.3, 1)
-                    pos_hint: {'center_x': 0.1, 'center_y': 0.5}
+                Button:
+                    font_size: 15
+                    size_hint: 0.5, 1
+                    on_press: app.root.current = 'FileChooserScreen'
+                    text: 'Выбрать файл вручную'
                 TextInput:
                     id: data
                     font_size: 18
-                    multiline: False 
+                    multiline: False
+                    hint_text: 'Укажите путь к файлу...' 
             FloatLayout:
                 Button:
                     font_size: 18
@@ -56,7 +54,6 @@
                     pos_hint: {'center_x': 0.5, 'center_y': 0.1}
                     on_press: root.open_file(data.text)
                     text: 'Сгенерировать'
-
 
 <ResultScreen>:
     input_data: results
@@ -79,6 +76,11 @@
                 text: 'Вернуться'  
                 on_press: root.get_back_and_clean(results)  
 
+<FileChooserScreen>:
+    FileChooserIconView:
+        id: file_chooser
+        rootpath: '/'
+        dirselect: True
 
 <CustomPopup>:
     auto_dismiss: False
