@@ -185,6 +185,10 @@ class ShortInfo(Screen):
             'ResultScreen').update_text_input('\\'.join(pc_data))
 
 
+class FileChooserScreen(Screen):
+    pass
+
+
 class ResultScreen(Screen):
     input_data = ObjectProperty()
 
@@ -223,6 +227,7 @@ class ShortInfoApp(MDApp):
         sm = ScreenManager()
         sm.add_widget(ShortInfo(name='ShortInfo'))
         sm.add_widget(ResultScreen(name='ResultScreen'))
+        sm.add_widget(FileChooserScreen(name='FileChooserScreen'))
         return sm
 
 
