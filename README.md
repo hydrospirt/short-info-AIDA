@@ -1,5 +1,5 @@
 # short-info-AIDA [WINDOWS ONLY]
-![Лицензия](https://img.shields.io/github/license/HRSpaceX/backend)
+![Лицензия](https://img.shields.io/github/license/hydrospirt/short-info-AIDA)
 
 ### Версия
 
