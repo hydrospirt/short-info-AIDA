@@ -52,7 +52,7 @@
                     font_size: 18
                     size_hint: 0.5, 1
                     pos_hint: {'center_x': 0.5, 'center_y': 0.1}
-                    on_press: root.open_file(data.text)
+                    on_press: root.process_file(data.text)
                     text: 'Сгенерировать'
 
 <ResultScreen>:
@@ -74,7 +74,7 @@
                 size_hint: 0.4, 0.2
                 pos_hint: {'center_x': 0.2, 'y': 0.75}
                 text: 'Вернуться'  
-                on_press: root.get_back_and_clean(results)  
+                on_press: root.get_back_and_clean() 
 
 <FileChooserScreen>:
     FileChooserIconView:
