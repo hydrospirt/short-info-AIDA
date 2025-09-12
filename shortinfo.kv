@@ -37,26 +37,23 @@
             row_force_default: True
             padding: (0, 0, 0, 10)
             BoxLayout:
-                Label:
-                    text: 'Укажите путь:'
-                    color: (1, 1, 1, .9)
-                    font_size: 30
-                    valign: 'middle'
-                    halign: 'right'
-                    size_hint: (0.3, 1)
-                    pos_hint: {'center_x': 0.1, 'center_y': 0.5}
+                Button:
+                    font_size: 15
+                    size_hint: 0.5, 1
+                    on_press: app.root.current = 'FileChooserScreen'
+                    text: 'Выбрать файл вручную'
                 TextInput:
                     id: data
                     font_size: 18
-                    multiline: False 
+                    multiline: False
+                    hint_text: 'Укажите путь к файлу...' 
             FloatLayout:
                 Button:
                     font_size: 18
                     size_hint: 0.5, 1
                     pos_hint: {'center_x': 0.5, 'center_y': 0.1}
-                    on_press: root.open_file(data.text)
+                    on_press: root.process_file(data.text)
                     text: 'Сгенерировать'
-
 
 <ResultScreen>:
     input_data: results
@@ -77,8 +74,34 @@
                 size_hint: 0.4, 0.2
                 pos_hint: {'center_x': 0.2, 'y': 0.75}
                 text: 'Вернуться'  
-                on_press: root.get_back_and_clean(results)  
+                on_press: root.get_back_and_clean() 
 
+<FileChooserScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: "5dp"
+        Label:
+            id: path_label
+            size_hint_y: None
+            height: "30dp"
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
+            text: file_chooser.path
+        FileChooserListView:
+            id: file_chooser
+            filters: ['*.html', '*.htm']
+        BoxLayout:
+            size_hint_y: None
+            height: "40dp"
+            spacing: "5dp"
+            padding: "5dp"
+            Button:
+                text: "Отмена"
+                on_release: app.root.current = 'ShortInfo'
+            Button:
+                text: "Выбрать"
+                on_release: root.select_file(file_chooser.selection)
 
 <CustomPopup>:
     auto_dismiss: False
