@@ -3,7 +3,7 @@
 
 ### Версия
 
-0.1 alpha
+0.2 alpha
 
 ### О проекте
 short_info_AIDA - это GUI парсер HTM файлов программы AIDA64 для Windows 64.
