@@ -77,10 +77,31 @@
                 on_press: root.get_back_and_clean() 
 
 <FileChooserScreen>:
-    FileChooserIconView:
-        id: file_chooser
-        rootpath: '/'
-        dirselect: True
+    BoxLayout:
+        orientation: 'vertical'
+        padding: "5dp"
+        Label:
+            id: path_label
+            size_hint_y: None
+            height: "30dp"
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
+            text: file_chooser.path
+        FileChooserListView:
+            id: file_chooser
+            filters: ['*.html', '*.htm']
+        BoxLayout:
+            size_hint_y: None
+            height: "40dp"
+            spacing: "5dp"
+            padding: "5dp"
+            Button:
+                text: "Отмена"
+                on_release: app.root.current = 'ShortInfo'
+            Button:
+                text: "Выбрать"
+                on_release: root.select_file(file_chooser.selection)
 
 <CustomPopup>:
     auto_dismiss: False
